@@ -3,15 +3,15 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [apiStatus, setApiStatus] = useState("checking...");
 
-  
+  useEffect(() => {
+    const API = import.meta.env.VITE_BACKEND_URL || "";
+    fetch(`${API}/api/v1/health`)
+      .then((res) => res.json())
+      .then((data) => setApiStatus(data.status === "ok" ? "online ✅" : "error"))
+      .catch(() => setApiStatus("offline ❌"));
+  }, []);
 
- return (useEffect(() => {
-  const API = import.meta.env.VITE_BACKEND_URL || "";
-  fetch(`${API}/api/v1/health`)
-    .then((res) => res.json())
-    .then((data) => setApiStatus(data.status === "ok" ? "online ✅" : "error"))
-    .catch(() => setApiStatus("offline ❌"));
-}, []);
+  return (
     <div className="page">
       <header className="hero">
         <h1 className="logo">ZimAds</h1>
@@ -49,4 +49,4 @@ export default function Home() {
       </footer>
     </div>
   );
-      }
+            }
